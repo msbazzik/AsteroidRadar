@@ -4,11 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.TextItemViewHolder
 
 class MainRecyclerViewAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
-    var data = listOf<String>()
+    var data = listOf<Asteroid>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount(): Int {
         return data.size
@@ -16,7 +21,7 @@ class MainRecyclerViewAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
 
     override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
         val item = data[position]
-        holder.textView.text = item
+        holder.textView.text = item.codename
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextItemViewHolder {
