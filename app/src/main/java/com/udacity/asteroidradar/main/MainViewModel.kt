@@ -1,14 +1,17 @@
 package com.udacity.asteroidradar.main
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.NasaApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
-class MainViewModel : ViewModel() {
+class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _response = MutableLiveData<String>()
 
     val response: LiveData<String>
@@ -19,7 +22,9 @@ class MainViewModel : ViewModel() {
     }
 
     private fun getAsteroidList() {
-        NasaApi.retrofitService.getAsteroids("2022-07-11", "2022-07-12")
+        val apiKey = getApplication<Application>().resources.getString(R.string.api_key);
+
+        NasaApi.retrofitService.getAsteroids("2022-07-11", "2022-07-12", apiKey)
             .enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     _response.value = "Failure: " + t.message

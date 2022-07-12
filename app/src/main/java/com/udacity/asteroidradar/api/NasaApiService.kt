@@ -17,7 +17,7 @@ interface NasaApiService {
     fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
-        @Query("api_key") apiKey: String = "DEMO_KEY"
+        @Query("api_key") apiKey: String
     ): Call<String>
 }
 
