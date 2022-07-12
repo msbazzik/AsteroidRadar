@@ -21,6 +21,22 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         getAsteroidList()
     }
 
+    val textStrings = listOf<String>(
+        "Asteroid 001",
+        "Asteroid 002",
+        "Asteroid 003",
+        "Asteroid 004",
+        "Asteroid 005",
+        "Asteroid 006",
+        "Asteroid 007",
+        "Asteroid 008",
+        "Asteroid 009",
+        "Asteroid 010",
+        "Asteroid 011",
+        "Asteroid 012",
+        "Asteroid 013"
+    )
+
     private fun getAsteroidList() {
         val apiKey = getApplication<Application>().resources.getString(R.string.api_key);
 
