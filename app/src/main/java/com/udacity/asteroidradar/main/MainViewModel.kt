@@ -18,7 +18,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         get() = _response
 
     init {
-        getAsteroidList()
+        refreshAsteroidList()
     }
 
     val textStrings = listOf<String>(
@@ -37,10 +37,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         "Asteroid 013"
     )
 
-    private fun getAsteroidList() {
+    private fun refreshAsteroidList() {
         val apiKey = getApplication<Application>().resources.getString(R.string.api_key);
 
-        NasaApi.retrofitService.getAsteroids("2022-07-11", "2022-07-12", apiKey)
+        NasaApi.retrofitService.getAsteroids("2022-07-12", "2022-07-19", apiKey)
             .enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     _response.value = "Failure: " + t.message
