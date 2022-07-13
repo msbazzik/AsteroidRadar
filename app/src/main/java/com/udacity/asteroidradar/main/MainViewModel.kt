@@ -13,11 +13,19 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.*
 
+enum class MainApiStatus { LOADING, ERROR, DONE }
+
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _asteroidList = MutableLiveData<List<Asteroid>>()
     val asteroidList: LiveData<List<Asteroid>>
         get() = _asteroidList
+
+    private val _status = MutableLiveData<MainApiStatus>()
+    val status: LiveData<MainApiStatus>
+        get() = _status
+
+    var errorMessage: String = ""
 
     init {
         viewModelScope.launch {
@@ -27,6 +35,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     suspend fun refreshAsteroidList() {
         val apiKey = getApplication<Application>().resources.getString(R.string.api_key);
+        _status.value = MainApiStatus.LOADING
         try {
             val response = NasaApi.retrofitService.getAsteroids(
                 "2022-07-13", "2022-07-20", apiKey
@@ -34,7 +43,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val parsedAsteroid =
                 parseAsteroidsJsonResult(JSONObject(response))
             _asteroidList.value = parsedAsteroid
+            _status.value = MainApiStatus.DONE
         } catch (e: Exception) {
+            errorMessage = e.message.toString()
+            _status.value = MainApiStatus.ERROR
             _asteroidList.value = ArrayList()
         }
     }
