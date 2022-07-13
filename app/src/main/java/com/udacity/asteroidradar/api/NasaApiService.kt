@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.api
 
 import com.udacity.asteroidradar.Constants.BASE_URL
-import retrofit2.Call
 import retrofit2.Retrofit.Builder
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
@@ -14,11 +13,11 @@ private val retrofit = Builder()
 
 interface NasaApiService {
     @GET("neo/rest/v1/feed")
-    fun getAsteroids(
+    suspend fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
         @Query("api_key") apiKey: String
-    ): Call<String>
+    ): String
 }
 
 object NasaApi {
