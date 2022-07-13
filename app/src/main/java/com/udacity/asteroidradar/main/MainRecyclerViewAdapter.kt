@@ -1,14 +1,16 @@
 package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.TextItemViewHolder
 
-class MainRecyclerViewAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
+class MainRecyclerViewAdapter : RecyclerView.Adapter<MainRecyclerViewAdapter.MyViewHolder>() {
     var data = listOf<Asteroid>()
         set(value) {
             field = value
@@ -19,16 +21,28 @@ class MainRecyclerViewAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = data[position]
-        holder.textView.text = item.codename
+        holder.codeNameText.text = item.codename
+        holder.approachDate.text = item.closeApproachDate
+
+        holder.hazardousImageView.setImageResource(
+            if (item.isPotentiallyHazardous) R.drawable.ic_status_potentially_hazardous
+            else R.drawable.ic_status_normal
+        )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(
-            R.layout.text_item_view, parent, false
-        ) as TextView
-        return TextItemViewHolder(view)
+            R.layout.asteroid_item_view, parent, false
+        )
+        return MyViewHolder(view)
+    }
+
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val codeNameText: TextView = itemView.findViewById(R.id.code_name_text)
+        val approachDate: TextView = itemView.findViewById(R.id.approach_date)
+        val hazardousImageView: ImageView = itemView.findViewById(R.id.hazardous_imageView)
     }
 }
