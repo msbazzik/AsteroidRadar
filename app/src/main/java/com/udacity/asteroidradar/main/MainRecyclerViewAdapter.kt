@@ -1,13 +1,10 @@
 package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.databinding.AsteroidItemViewBinding
 
 class MainRecyclerViewAdapter(private val onClickListener: OnClickListener) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.MyViewHolder>() {
@@ -33,28 +30,18 @@ class MainRecyclerViewAdapter(private val onClickListener: OnClickListener) :
         return MyViewHolder.from(parent)
     }
 
-    class MyViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val codeNameText: TextView = itemView.findViewById(R.id.code_name_text)
-        val approachDate: TextView = itemView.findViewById(R.id.approach_date)
-        val hazardousImageView: ImageView = itemView.findViewById(R.id.hazardous_imageView)
-
+    class MyViewHolder private constructor(val binding: AsteroidItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Asteroid) {
-            codeNameText.text = item.codename
-            approachDate.text = item.closeApproachDate
-
-            hazardousImageView.setImageResource(
-                if (item.isPotentiallyHazardous) R.drawable.ic_status_potentially_hazardous
-                else R.drawable.ic_status_normal
-            )
+            binding.asteroid = item
+            binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(
-                    R.layout.asteroid_item_view, parent, false
-                )
-                return MyViewHolder(view)
+                val binding = AsteroidItemViewBinding.inflate(layoutInflater, parent, false)
+                return MyViewHolder(binding)
             }
         }
     }
