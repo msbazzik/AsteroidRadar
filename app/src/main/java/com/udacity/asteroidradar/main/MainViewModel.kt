@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.database.NasaDatabaseFilter
 import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
 import java.util.*
@@ -22,7 +23,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val database = AsteroidDatabase.getInstance(app)
     private val asteroidsRepository = AsteroidsRepository(database)
 
-    val asteroidList = asteroidsRepository.asteroidsList
+    var asteroidList = asteroidsRepository
+        .getAsteroidsList(NasaDatabaseFilter.ALL_ASTEROIDS)
 
     var errorMessage: String = ""
 
@@ -42,5 +44,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             errorMessage = e.message.toString()
             _status.value = MainApiStatus.ERROR
         }
+    }
+
+    fun updateFilter(filter: NasaDatabaseFilter) {
+        asteroidList = asteroidsRepository
+            .getAsteroidsList(filter)
     }
 }
