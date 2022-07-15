@@ -5,25 +5,24 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.api.NasaApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.util.*
 
 enum class MainApiStatus { LOADING, ERROR, DONE }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val _asteroidList = MutableLiveData<List<Asteroid>>()
-    val asteroidList: LiveData<List<Asteroid>>
-        get() = _asteroidList
-
     private val _status = MutableLiveData<MainApiStatus>()
     val status: LiveData<MainApiStatus>
         get() = _status
+
+    private val database = AsteroidDatabase.getInstance(app)
+    private val asteroidsRepository = AsteroidsRepository(database)
+
+    val asteroidList = asteroidsRepository.asteroidsList
 
     var errorMessage: String = ""
 
@@ -37,17 +36,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val apiKey = getApplication<Application>().resources.getString(R.string.api_key);
         _status.value = MainApiStatus.LOADING
         try {
-            val response = NasaApi.retrofitService.getAsteroids(
-                "2022-07-13", "2022-07-20", apiKey
-            )
-            val parsedAsteroid =
-                parseAsteroidsJsonResult(JSONObject(response))
-            _asteroidList.value = parsedAsteroid
+            asteroidsRepository.fetchAsteroids(apiKey)
             _status.value = MainApiStatus.DONE
         } catch (e: Exception) {
             errorMessage = e.message.toString()
             _status.value = MainApiStatus.ERROR
-            _asteroidList.value = ArrayList()
         }
     }
 }
