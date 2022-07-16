@@ -41,9 +41,12 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 
-@BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?) {
-    imgUrl?.let {
-        Picasso.get().load(it).into(imgView);
+@BindingAdapter("pictureOfTheDay")
+fun bindImage(imgView: ImageView, pictureOfDay: PictureOfDay?) {
+    pictureOfDay?.let {
+        imgView.contentDescription = it.title
+        if (it.mediaType == "image") {
+            Picasso.get().load(it.url).into(imgView)
+        }
     }
 }
