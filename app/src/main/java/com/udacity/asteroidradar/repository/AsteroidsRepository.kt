@@ -19,7 +19,7 @@ class AsteroidsRepository(private val database: AsteroidDatabase) {
     }
 
     suspend fun fetchAsteroids(apiKey: String) {
-        val response = NasaApi.retrofitService.getAsteroids(
+        val response = NasaApi.retrofitScalarsService.getAsteroids(
             "2022-07-15", "2022-07-22", apiKey
         )
         val parsedAsteroid =
