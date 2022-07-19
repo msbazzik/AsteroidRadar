@@ -57,4 +57,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun updateFilter(filter: NasaDatabaseFilter) {
         _filter.value = filter
     }
+
+    fun onErrorShown() {
+        _status.value = MainApiStatus.DONE
+    }
 }

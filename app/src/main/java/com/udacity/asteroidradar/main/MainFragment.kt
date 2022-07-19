@@ -51,6 +51,7 @@ class MainFragment : Fragment() {
                         getString(R.string.error_message, viewModel.errorMessage),
                         Snackbar.LENGTH_LONG
                     ).show()
+                    viewModel.onErrorShown()
                 }
                 MainApiStatus.DONE -> {
                     binding.statusLoadingWheel.visibility = View.GONE
