@@ -38,15 +38,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         viewModelScope.launch {
-            refreshAsteroidList()
-            _pictureOfDay.value = NasaApi.retrofitMoshiService.getImageOfTheDay(apiKey)
+            refreshAsteroid()
         }
     }
 
-    suspend fun refreshAsteroidList() {
+    suspend fun refreshAsteroid() {
         _status.value = MainApiStatus.LOADING
         try {
             asteroidsRepository.fetchAsteroids(apiKey)
+            _pictureOfDay.value = NasaApi.retrofitMoshiService.getImageOfTheDay(apiKey)
             _status.value = MainApiStatus.DONE
         } catch (e: Exception) {
             errorMessage = e.message.toString()
