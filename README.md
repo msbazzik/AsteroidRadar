@@ -42,7 +42,7 @@ The first step is to get an API Key from NASA. Follow the instructions as listed
 
 3. In order to use this app you need to clone the project from this repo, open in Android Studio and 
    insert your API key into "local.properties" file like so:
-   ```` apiKey="YOUR_API_KEY_HERE"
+   ``` apiKey="YOUR_API_KEY_HERE"```
 
 4. Now you should be able to run and enjoy the app. 
 
