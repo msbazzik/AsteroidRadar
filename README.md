@@ -49,6 +49,11 @@ The first step is to get an API Key from NASA. Follow the instructions as listed
 
 ## Screenshots
 
-![img.png](screenshots/screen_1.png)   ![img.png](screenshots/screen_2.png)
-![img.png](screenshots/screen_3.png)   ![img.png](screenshots/screen_4.png)
+<img src="screenshots/screen_1.png" width="250" height="444">
+
+<img src="screenshots/screen_2.png" width="250" height="444">
+ 
+<img src="screenshots/screen_3.png" width="250" height="444">
+
+<img src="screenshots/screen_4.png" width="250" height="444">
 
